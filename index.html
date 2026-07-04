@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>校园材料整理小站</title>
+  <style>
+    :root {
+      --bg: #eef8f6;
+      --ink: #101827;
+      --muted: #607080;
+      --line: #b9ebe3;
+      --card: rgba(255, 255, 255, .78);
+      --mint: #0f8f88;
+      --gold: #d87117;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", Arial, sans-serif;
+      line-height: 1.65;
+      background:
+        linear-gradient(90deg, rgba(19, 126, 122, .08) 1px, transparent 1px),
+        linear-gradient(rgba(19, 126, 122, .08) 1px, transparent 1px),
+        radial-gradient(circle at 12% 0%, rgba(73, 227, 199, .2), transparent 35%),
+        radial-gradient(circle at 90% 12%, rgba(59, 130, 246, .12), transparent 38%),
+        var(--bg);
+      background-size: 72px 72px, 72px 72px, auto, auto, auto;
+    }
+
+    .page {
+      width: min(1100px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 56px 0 72px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 40px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: #08776f;
+      background: rgba(255, 255, 255, .56);
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 30px 0 0;
+      font-size: clamp(46px, 7vw, 80px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 8px;
+      color: white;
+      background: linear-gradient(135deg, #0f8f88, #1764df);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .btn.secondary {
+      color: #0b6f68;
+      background: rgba(255, 255, 255, .72);
+      border: 1px solid var(--line);
+    }
+
+    section {
+      margin-top: 58px;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 34px;
+      line-height: 1.2;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 25px;
+      line-height: 1.35;
+    }
+
+    .section-note {
+      margin: 0 0 22px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      border: 1px solid rgba(110, 214, 204, .72);
+      border-radius: 8px;
+      background: var(--card);
+      box-shadow: 0 18px 48px rgba(15, 55, 72, .08);
+      padding: 24px;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .price {
+      white-space: nowrap;
+      color: var(--gold);
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 18px;
+    }
+
+    .chip {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #f4fbfa;
+      border: 1px solid #d6eeeb;
+      color: #50606f;
+      font-size: 14px;
+    }
+
+    .mini-title {
+      margin: 14px 0 4px;
+      color: #0d7068;
+      font-weight: 800;
+    }
+
+    .card p,
+    .step p,
+    .notice p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .doc-placeholders {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .doc-slot {
+      min-height: 146px;
+      border-radius: 8px;
+      border: 1px dashed #a7d8d2;
+      background: linear-gradient(#f6fbfa, #ffffff);
+      display: flex;
+      align-items: flex-end;
+      padding: 14px;
+      color: #82909f;
+      font-size: 14px;
+    }
+
+    .doc-slot.filled {
+      align-items: center;
+      background: linear-gradient(#f7fcfb, #ffffff);
+      border-style: solid;
+    }
+
+    .doc-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .doc-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 42px;
+      padding: 0 12px;
+      border-radius: 8px;
+      border: 1px solid #d6eeeb;
+      background: rgba(255, 255, 255, .82);
+      color: #0d7068;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .doc-link::after {
+      content: "打开";
+      color: #607080;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .step {
+      background: rgba(255, 255, 255, .82);
+      border: 1px solid #d6eeeb;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    .num {
+      display: inline-flex;
+      width: 30px;
+      height: 30px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: white;
+      background: var(--mint);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .notice {
+      background: #101827;
+      color: white;
+      border-radius: 8px;
+      padding: 28px;
+    }
+
+    .notice p {
+      margin-top: 8px;
+      color: #b8c6d4;
+    }
+
+    .contact {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 190px;
+      gap: 28px;
+      align-items: center;
+      background: linear-gradient(135deg, #0c7c74, #1764df);
+      color: white;
+      border-radius: 8px;
+      padding: 30px;
+    }
+
+    .contact p {
+      margin: 6px 0 0;
+      color: rgba(255, 255, 255, .82);
+    }
+
+    .qr-placeholder {
+      width: 176px;
+      aspect-ratio: 1;
+      border-radius: 8px;
+      background: white;
+      border: 10px solid rgba(255, 255, 255, .95);
+      display: grid;
+      place-items: center;
+      color: #7a8795;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 700;
+      justify-self: end;
+    }
+
+    @media (max-width: 820px) {
+      .page {
+        width: min(100% - 28px, 560px);
+        padding-top: 32px;
+      }
+
+      .grid,
+      .steps,
+      .doc-placeholders,
+      .contact {
+        grid-template-columns: 1fr;
+      }
+
+      .qr-placeholder {
+        justify-self: start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="tag">校园材料整理小站</div>
+    <h1>作业材料与汇报整理</h1>
+    <div class="hero-actions">
+      <a class="btn" href="#cases">案例方向</a>
+      <a class="btn" href="#consult">怎么咨询</a>
+    </div>
+
+    <section id="cases">
+      <h2>案例方向</h2>
+
+      <div class="grid">
+        <article class="card case-card">
+          <div class="card-head">
+            <h3>Word基础排版</h3>
+            <div class="price">6.9元起</div>
+          </div>
+          <div class="chips">
+            <span class="chip">目录</span>
+            <span class="chip">编号</span>
+            <span class="chip">页眉页脚</span>
+          </div>
+          <div class="mini-title">常见问题</div>
+          <p>目录、编号、页码、字体和行距总是调不好。</p>
+          <div class="mini-title">可以处理</div>
+          <p>统一字体段落，调整目录编号，修正常见格式问题。</p>
+          <div class="doc-placeholders">
+            <div class="doc-slot filled">
+              <div class="doc-links">
+                <a class="doc-link" href="docs/修改前.docx">修改前</a>
+                <a class="doc-link" href="docs/格式.doc">格式</a>
+              </div>
+            </div>
+            <div class="doc-slot filled">
+              <div class="doc-links">
+                <a class="doc-link" href="docs/修改后.docx">修改后</a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card case-card">
+          <div class="card-head">
+            <h3>课程 / 实训报告整理</h3>
+            <div class="price">9.9元起</div>
+          </div>
+          <div class="chips">
+            <span class="chip">结构梳理</span>
+            <span class="chip">格式调整</span>
+            <span class="chip">表达润色</span>
+          </div>
+          <div class="mini-title">常见问题</div>
+          <p>报告写完了，但结构散、格式乱、语言不够顺。</p>
+          <div class="mini-title">可以处理</div>
+          <p>整理标题层级、段落顺序、格式规范和基础表达。</p>
+          <div class="doc-placeholders">
+            <div class="doc-slot"></div>
+            <div class="doc-slot"></div>
+          </div>
+        </article>
+
+        <article class="card case-card">
+          <div class="card-head">
+            <h3>Excel表格 / 图表整理</h3>
+            <div class="price">9.9元起</div>
+          </div>
+          <div class="chips">
+            <span class="chip">清理表格</span>
+            <span class="chip">基础统计</span>
+            <span class="chip">制作图表</span>
+          </div>
+          <div class="mini-title">常见问题</div>
+          <p>数据看起来很乱，不知道怎么整理成直观图表。</p>
+          <div class="mini-title">可以处理</div>
+          <p>清理表格格式，整理基础统计，制作简单展示图表。</p>
+          <div class="doc-placeholders">
+            <div class="doc-slot"></div>
+            <div class="doc-slot"></div>
+          </div>
+        </article>
+
+        <article class="card case-card">
+          <div class="card-head">
+            <h3>PPT制作与美化</h3>
+            <div class="price">19元起</div>
+          </div>
+          <div class="chips">
+            <span class="chip">统一页面风格</span>
+            <span class="chip">梳理展示逻辑</span>
+            <span class="chip">优化标题重点</span>
+          </div>
+          <div class="mini-title">常见问题</div>
+          <p>内容有了，但页面太乱、重点不明显、答辩展示不够清楚。</p>
+          <div class="mini-title">可以处理</div>
+          <p>统一配色和版式，调整页面层级，突出标题和重点内容。</p>
+          <div class="doc-placeholders">
+            <div class="doc-slot"></div>
+            <div class="doc-slot"></div>
+          </div>
+        </article>
+
+        <article class="card case-card">
+          <div class="card-head">
+            <h3>比赛 / 项目材料</h3>
+            <div class="price">49元起</div>
+          </div>
+          <div class="chips">
+            <span class="chip">计划书</span>
+            <span class="chip">项目介绍</span>
+            <span class="chip">答辩材料</span>
+          </div>
+          <div class="mini-title">常见问题</div>
+          <p>项目内容有，但材料散、表达不够集中、展示逻辑不清。</p>
+          <div class="mini-title">可以处理</div>
+          <p>梳理项目结构，整理介绍材料，优化答辩展示重点。</p>
+          <div class="doc-placeholders">
+            <div class="doc-slot"></div>
+            <div class="doc-slot"></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="consult">
+      <h2>怎么咨询</h2>
+      <p class="section-note">先把情况说清楚，能不能做、多少钱、多久完成都会提前沟通。</p>
+      <div class="steps">
+        <div class="step"><div class="num">1</div><h3>发材料</h3><p>内容、要求、截止时间。</p></div>
+        <div class="step"><div class="num">2</div><h3>确认能否接</h3><p>看难度、时间和要求。</p></div>
+        <div class="step"><div class="num">3</div><h3>沟通报价</h3><p>说明修改范围和交付方式。</p></div>
+        <div class="step"><div class="num">4</div><h3>修改交付</h3><p>先给可看的版本，再按要求调整。</p></div>
+      </div>
+    </section>
+
+    <section class="notice">
+      <h2>接单说明</h2>
+      <p>能不能做、多少钱、多久完成，都先看具体材料和要求。不乱接单；主要帮你把已有内容整理得更清楚、更规范、更适合展示或提交。</p>
+    </section>
+
+    <section class="contact">
+      <div>
+        <h2>加微信发需求</h2>
+        <p>准备咨询时，可以直接发材料文件、老师要求、截止时间和希望整理到什么程度。</p>
+      </div>
+      <div class="qr-placeholder">微信二维码<br />预留位</div>
+    </section>
+  </main>
+</body>
+</html>
